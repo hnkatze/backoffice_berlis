@@ -23,8 +23,9 @@ export function BackOfficeComponent() {
 
   useEffect(() => {
     async function getIntentory() {
-      const invento = await fireCrude.getInventory();
+      const invento = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu-items`).then((res) => res.json());
       const branchess = await fireCrude.getBranches();
+
       setInventory(invento);
       setBranches(branchess);
     }
@@ -74,7 +75,7 @@ export function BackOfficeComponent() {
               <CardDescription>Administrar sucursales</CardDescription>
             </CardHeader>
             <CardContent>
-              <BranchManagement branchess={branches} />
+              <BranchManagement  />
             </CardContent>
           </Card>
         </TabsContent>

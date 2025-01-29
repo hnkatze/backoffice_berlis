@@ -4,10 +4,10 @@ import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 
-const path = ['/dashboard', '/dashboard/ordenes', '/dashboard/cocina', '/dashboard/bebidas']
+const path = ['/dashboard', '/dashboard/ordenes', '/dashboard/cocina', '/dashboard/bebidas', '/dashboard/sucursales', '/dashboard/personal','/dashboard/inventario', '/dashboard/back']
 const rolePaths: { [key: string]: string[] } = {
-  admin: ['/dashboard', '/dashboard/ordenes', '/dashboard/cocina', '/dashboard/bebidas','/dashboard/back'],
-  gerent: ['/dashboard', '/dashboard/ordenes', '/dashboard/cocina', '/dashboard/bebidas','/dashboard/back'],
+  admin: ['/dashboard', '/dashboard/ordenes', '/dashboard/cocina', '/dashboard/bebidas', '/dashboard/sucursales', '/dashboard/personal','/dashboard/inventario', '/dashboard/back'],
+  gerent: ['/dashboard', '/dashboard/ordenes', '/dashboard/cocina', '/dashboard/bebidas','/dashboard/inventario'],
   cashier: ['/dashboard', '/dashboard/ordenes'],
   kitchen: ['/dashboard', '/dashboard/cocina'],
   drinks: ['/dashboard', '/dashboard/bebidas']

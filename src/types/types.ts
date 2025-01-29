@@ -1,12 +1,11 @@
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Portion {
   size: string;
   price: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 interface MenuItem {
   category?: string;
   id?: string;
@@ -66,6 +65,12 @@ interface Branch {
   latitude: number;
   longitude: number;
   radius: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface BranchesList{
+  id: string;
+  name: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

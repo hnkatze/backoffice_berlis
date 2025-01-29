@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,12 +22,8 @@ import {
 import { Edit, Trash2 } from "lucide-react";
 import { fireCrude } from "@/lib/crude.firebase";
 
-export function BranchManagement({
-  branchess,
-}: {
-  readonly branchess: Branch[];
-}) {
-  const [branches, setBranches] = useState<Branch[]>(branchess);
+export function BranchManagement() {
+  const [branches, setBranches] = useState<Branch[]>([]);
   const [newBranch, setNewBranch] = useState<Omit<NewBranch, "id">>({
     name: "",
     latitude: 0,
@@ -36,6 +32,19 @@ export function BranchManagement({
   });
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  
+  useEffect(() => {
+    const getBranches = async (
+    ) => { const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sucursales`);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: Branch[] = (await response.json()).map((branch: any) => ({
+      ...branch,
+      id: branch._id,
+    }));
+    setBranches(data);
+    } ;
+    getBranches();
+  }, []);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewBranch((prev) => ({
@@ -48,16 +57,32 @@ export function BranchManagement({
     e.preventDefault();
 
     if (editingId) {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sucursales/${editingId}`,{
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBranch),
+      })
+      if (!response.ok) {
+        return;}else{
       setBranches(
         branches.map((branch) =>
           branch.id === editingId ? { ...newBranch, id: editingId } : branch
         )
       );
-      await fireCrude.updateBranch({ ...newBranch, id: editingId });
       setEditingId(null);
+    }
     } else {
-      const id = await fireCrude.addNewBranch(newBranch);
-      setBranches([...branches, { ...newBranch, id }]);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sucursales`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBranch),
+      })
+      const { _id } = await response.json();
+      setBranches([...branches, { ...newBranch, id: _id }]);
     }
     setNewBranch({ name: "", latitude: 0, longitude: 0, radius: 0 });
   };
